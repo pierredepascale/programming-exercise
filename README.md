@@ -1,2 +1,5 @@
-# programming-exercise
-Different programming exercise in C++
+# Programming exercise
+
+This repository contains various solution to programming
+exercise in c++.
+
