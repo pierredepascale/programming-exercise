@@ -1,36 +1,43 @@
-// longuest increasing sequence
+// finds the longuest increasing sequence in a vector
+// formulation
+// lis(n) = max(seq_at(n), lis(seq_after(n)))
 
 #include <vector>
 #include <iostream>
 
 using namespace std;
 
-// formulation:
-// lis(seq) = 1+max_of_i(
-int lis(const vector<int> &seq, int start)
-{
-  int maximum_length = 1 ;
+// Testscase
+// lis([1,2,3,1,1,2,1,2,3,4]) = 4
+// list([]) = 0
+// list([1]) = 1
 
-  for (int index = start+1 ; index < seq.size() ; index++)
-    {
-      if (seq[index] >= seq[start])
-        {
-          int sequence_length = 1 + lis(seq, index) ;
-          
-          if (sequence_length > maximum_length)
-            maximum_length = sequence_length ;
-        }
-    }
-  return maximum_length ;
+int seq_at(const vector<int>& sequence, int start) {
+  int last = sequence[start] ;
+  int index = start+1 ;
+  
+  while(index < sequence.size() && sequence[index] >= last) {
+    last = sequence[index] ;
+    index++ ;
+  }
+
+  return index-start ;
 }
 
-// { 1,2,3,4 } => 4
-// { 1,3,2,4 } => 3
-// { } => 0
+int lis(const vector<int>& sequence, int start) {
+  if (start < sequence.size()) {
+    int len = seq_at(sequence, start) ;
+    return max(len, lis(sequence, start+len)) ;
+  } else {
+    return 0 ;
+  }
+}
 
-int main(int ac, char *av[])
-{
-  cout << "LIS 1,2,3,4 => " << lis({1,2,3,4}, 0) << endl ;
-  cout << "LIS 1,3,2,4 => " << lis({1,3,2,4}, 0) << endl ;
-  cout << "LIS {} => " << lis({}, 0) << endl ;
+int main(int ac, char *av[]) {
+  cout << "lis([1,2,3,1,1,2,1,2,3,4]) is "
+       << lis({1,2,3,1,1,2,1,2,3,4}, 0) << endl ;
+  cout << "lis([1]) is "
+       << lis({1}, 0) << endl ;
+  cout << "lis([]) is "
+       << lis({}, 0) << endl ;
 }
